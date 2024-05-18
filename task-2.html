@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do List</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        text-align: center;
+    }
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    .todo-item {
+        margin-bottom: 10px;
+    }
+    .completed {
+        text-decoration: line-through;
+        color: #888;
+    }
+</style>
+</head>
+<body>
+    
+
+<div class="container">
+    <h1>To-Do List</h1>
+    <input type="text" id="taskInput" placeholder="Add a new task...">
+    <button onclick="addTask()">Add Task</button>
+    <div id="tasks"></div>
+</div>
+
+<script>
+    let tasks = [];
+
+    function renderTasks() {
+        const tasksContainer = document.getElementById('tasks');
+        tasksContainer.innerHTML = '';
+        tasks.forEach((task, index) => {
+            const taskElement = document.createElement('div');
+            taskElement.className = 'todo-item';
+            if (task.completed) {
+                taskElement.classList.add('completed');
+            }
+            taskElement.innerHTML = `
+                <input type="checkbox" onchange="toggleTaskCompletion(${index})" ${task.completed ? 'checked' : ''}>
+                <span>${task.text}</span>
+                <button onclick="deleteTask(${index})">Delete</button>
+            `;
+            tasksContainer.appendChild(taskElement);
+        });
+    }
+
+    function addTask() {
+        const taskInput = document.getElementById('taskInput');
+        const taskText = taskInput.value.trim();
+        if (taskText !== '') {
+            tasks.push({ text: taskText, completed: false });
+            taskInput.value = '';
+            renderTasks();
+        }
+    }
+
+    function deleteTask(index) {
+        tasks.splice(index, 1);
+        renderTasks();
+    }
+
+    function toggleTaskCompletion(index) {
+        tasks[index].completed = !tasks[index].completed;
+        renderTasks();
+    }
+</script>
+
+</body>
+</html>
